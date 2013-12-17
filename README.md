@@ -1,4 +1,4 @@
 dtm
 ===
 
-Destributed Task Management
+Distributed Task Management
