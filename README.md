@@ -1,4 +1,4 @@
-dtm
+OTS
 ===
 
-Distributed Task Management
+Open Task Standard - Distributed Task Management
