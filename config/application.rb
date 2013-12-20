@@ -21,3 +21,5 @@ module Ots
     # config.i18n.default_locale = :de
   end
 end
+
+require 'ots.rb'
