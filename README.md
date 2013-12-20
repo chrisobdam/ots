@@ -18,7 +18,7 @@ Task Scheme
     }
   ],  
   "listeners": [
-    "john@doe.com", janine@example.com
+    "john@doe.com", "janine@example.com"
   ],
   "comments": [
     {
@@ -30,8 +30,24 @@ Task Scheme
   ]
 }
 
+## End points
+
+* GET /users
+
+* POST /users/{identifier}/tasks/{identifier}/assign
+* POST /tasks/{identifier}
+
+
+## assign task on different ots server
+
+* call assign endpoint
+* ots server fetches task from server
+* 
 
 ## Assignee statuses
 * pending
 * accepted
 * denied
+
+## Syncing
+Each task has a ETAG, which changes on each change, also if comments changes gets added
