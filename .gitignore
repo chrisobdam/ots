@@ -4,3 +4,5 @@ log
 Gemfile.lock
 
 tmp
+
+db/test.sqlite3
