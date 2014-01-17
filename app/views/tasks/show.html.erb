@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @task.title %></h1>
+
+<h2>Assignees</h2>
+<ul>
+  <% @task.assignees.each do |assignee| %>
+  <li><%= assignee.user_name %> (<%= assignee.status %>)</li>
+  <%- end -%>
+</ul>
+
+<%= link_to 'Edit', edit_user_task_path(current_user,@task) %> |
+<%= link_to 'Back', user_path(current_user) %>

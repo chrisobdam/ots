@@ -1,7 +1,9 @@
 module Ots
-  class Server
-    include Dnsruby    
-    
+  module Webfinger
+    class NoOtsProfileFound < StandardError; end
+  end
+
+  class Server    
     @domain
     @endpoints
     
@@ -9,25 +11,23 @@ module Ots
       @domain = domain
     end
     
-    def assign(task)
+    def assign(task, assignee_identifier)
+      if active?
+        begin
+          response = HTTParty.post("https://#{@domain}/assign", {:body => {:task_identifier => task.identifier, :assignee_identifier => assignee_identifier}})
+          # response.code = 200
+        rescue SocketError
+          return false
+        end
+      end
     end
     
-    def resolve_dns_txt
-      txt = Dnsruby::Resolver.new.query(domain, Types.TXT)
-    end
-    
-    def valid?
-      # has xrds
-      # check https certificate is valid
+    def webfinger_enabled?
+      # check if yrd is in place
     end
     
     def get_endpoints_from_xrds
     end
     
-    def get_domain_from_txt_record(txt)
-      if result = (txt||"").match(/domain:(.+)$/)
-        result[1]
-      end
-    end
   end
 end

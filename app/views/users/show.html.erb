@@ -1,0 +1,11 @@
+<p id="notice"><%= notice %></p>
+
+<%= @user.identifier %>
+
+<ul>
+  <%= render partial: "tasks/task", collection: @user.tasks %>
+</ul>
+
+<%= link_to 'New Task', new_user_task_path(@user) %> |
+<%= link_to 'Profile', edit_user_path(@user) %> |
+<%= link_to 'Back', root_path %>

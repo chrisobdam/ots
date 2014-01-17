@@ -9,10 +9,16 @@ module Ots
       @domain = domain
     end
     
-    def self.build(identification_string)
-      identifier, domain = identification_string.split(/@/)
+    def self.build(identifier)
+      domain = identifier.split(/@/).last
       self.new(identifier, domain)
     end
+    
+    def valid_webfinger?
+      WebFinger.discover! as_webfinger
+      raise Ots::Webfinger::NoOtsProfileFound      
+    end
+    
     
     def server
       @server || Server.new(@domain)
@@ -21,5 +27,13 @@ module Ots
     def domain
       @domain
     end
+    
+    def identifier
+      @identifier
+    end
+  private
+    def as_webfinger
+      "acct:#{identifier}"
+    end  
   end
 end

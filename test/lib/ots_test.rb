@@ -1,41 +1,53 @@
 require 'test_helper'
-require 'webmock'
-
 
 class OtsTest < ActiveSupport::TestCase
-  include WebMock::API    
-  
-  test "check for valid txt record" do
-    # DnsRuby.any_instance.stub!(:query).and_return()
-    stub_request(:any, "www.example.com")
-    assert true
-  end
-  
-  test "get domain from txt" do
-    result = Ots::Server.new("").get_domain_from_txt_record("v=ots domain:opentaskstandard.com")
-    assert_equal("opentaskstandard.com", result)
-  end
-  
-  test "incorrect ots txt record" do
-    result = Ots::Server.new("").get_domain_from_txt_record("v=ots doman:opentaskstandard.com")
-    assert_equal(nil, result)
-  end
-
-  test "empty result" do
-    result = Ots::Server.new("").get_domain_from_txt_record("")
-    assert_equal(nil, result)        
-
-    result = Ots::Server.new("").get_domain_from_txt_record(nil)
-    assert_equal(nil, result)        
-  end
   
   test "build ok task" do
-    assert true
+    task = Ots::Task.build({:owner => "chris@opentaskstandard.com", :title => "Call John Doe"})
+    assert_equal("Call John Doe", task.title)
+    assert_equal("chris@opentaskstandard.com", task.owner.identifier)
+    assert_equal("opentaskstandard.com", task.owner.domain)    
   end
   
   test "build user by identifier ok" do
     user = Ots::User.build("chris@opentaskstandard.com")
     assert_equal("opentaskstandard.com", user.domain)
+    assert_equal("chris@opentaskstandard.com", user.identifier)
   end
-  
+
+  # test "call remote ots server assign endpoint assignee identifier rejected: does not exist" do
+  #   stub_request(:post, "https://opentaskstandard.com/assign").
+  #     with(:body => {:task_identifier => "25892e17-80f6-415f-9c65-7395632f0223@opentaskstandard.com"}, :headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+  #     to_return(:status => 404, :message => "", :headers => {})
+  #           
+  #   task = Ots::Task.build({:owner => "chris@opentaskstandard.com", :title => "Call John Doe", :identifier => "25892e17-80f6-415f-9c65-7395632f0223@opentaskstandard.com"})
+  #   
+  #   result = task.owner.server.assign(task, "steve@opentaskstandard.com")
+  # 
+  #   assert_equal(true, result)
+  # end
+
+  # test "call remote ots server assign endpoint " do
+  #   stub_request(:any, "https://opentaskstandard.com/assign").
+  #     with(:body => "task_identifier=25892e17-80f6-415f-9c65-7395632f0223%40opentaskstandard.com&assignee_identifier=steve%40opentaskstandard.com&assignee_token=hjkdsa").
+  #     to_return(:status => 200 ,:body => "", :headers => {})
+  #                 
+  #   task = Ots::Task.build({:owner => "chris@opentaskstandard.com", :title => "Call John Doe", :identifier => "25892e17-80f6-415f-9c65-7395632f0223@opentaskstandard.com"})
+  #   
+  #   result = task.owner.server.assign(task, "steve@opentaskstandard.com")
+  # 
+  #   assert_equal(true, result)
+  # end
+
+  # test "call remote ots server assign endpoint on non existing domain" do
+  #   stub_request(:post, "https://opentaskstandrd.com/assign").
+  #     with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+  #     to_raise(SocketError)
+  # 
+  #   task = Ots::Task.build({:owner => "chris@opentaskstandrd.com", :title => "Call John Doe"})
+  #   
+  #   result = task.owner.server.assign(task, "steve@opentaskstandard.com")
+  # 
+  #   assert_equal(false, result)    
+  # end  
 end

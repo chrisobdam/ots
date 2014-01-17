@@ -1,18 +1,32 @@
 module Ots
   class Task
     @owner
-    def initialize(owner)
+    @hash
+    
+    def initialize(owner, hash)
       @owner = owner
+      @hash = hash
     end
 
     def self.build(hash)
-      initialize(User.build(hash[:owner]))
-      
+      self.new(User.build(hash[:owner]), hash)
     end
 
     def assign(identifier)
       user = User.build(identifier)
       owner.server.assign(self, user)
+    end
+    
+    def owner
+      @owner
+    end
+    
+    def title
+      @hash[:title]
+    end
+    
+    def identifier
+      @hash[:identifier]
     end
   end
 end
