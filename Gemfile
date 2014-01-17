@@ -15,8 +15,11 @@ group :doc do
 end
 
 gem 'mysql2'
-gem 'rest-client'
-gem 'dnsruby'
+gem 'httparty'
+gem 'devise'
+gem 'pry'
+gem 'webfinger'
+
 
 group :test do
   gem 'webmock'
