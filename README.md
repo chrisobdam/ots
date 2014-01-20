@@ -22,8 +22,10 @@ But what if you collegaue uses a different task management app then you? Enter O
 3. Server checks if a OTS account is associated with the e-mail address
 4. If not, the registration process is finished
 
-### Update an existing assigned task 
-1. 
+### Update existing assigned task flow
+1. The task is updated
+2. The underlying OTS server sends the updated task object to the server who has created the task
+3. The 'owner' server propagates the updated task to all concerned
 
 ## The Task Object
 
