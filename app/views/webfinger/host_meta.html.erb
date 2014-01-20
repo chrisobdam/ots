@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <XRD xmlns='http://docs.oasis-open.org/ns/xri/xrd-1.0' 
      xmlns:hm='http://host-meta.net/xrd/1.0'>
-  <hm:Host xmlns='http://host-meta.net/xrd/1.0'><%= DOMAIN %></hm:Host>
-  <Link rel='lrdd' 
-        template='<%= WEBFINGER_SERVER %>/webfinger/{uri}'>
+  <hm:Host xmlns='http://host-meta.net/xrd/1.0'><%= APP_CONFIG["domain"] %></hm:Host>
+  <Link rel='ots' 
+        href='<%= APP_CONFIG["server"] %>/assign'>
     <Title>Resource Descriptor</Title>
-  </Link>
+  </Link>  
 </XRD>

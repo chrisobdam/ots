@@ -22,4 +22,6 @@ module Ots
   end
 end
 
+APP_CONFIG = YAML.load_file("#{Rails.root}/config/config.yml")
+
 require 'ots.rb'
