@@ -34,6 +34,19 @@ But what if you collegaue uses a different task management app then you? Enter O
 * Due date
 * Owner
 * Assignees
+  * User identifier
+  * State
 * Listeners
 * Comments
+  * Index
+  * Comment
+  * Author
+  * Date
+
+## User discovery via Webfinger and Webfist
+OTS aims to use Webfinger for discovering OTS accounts based on e-mail addresses. With Webfinger a server/domain can be queried if an user exists on that server.
+So if the e-mail address is chris@task.af, the OTS server queries the task.af domain to see if a Webfinger profile exists for the user "chris".
+
+If e-mail address used contains a domain that is not Webfinger enabled, we use the Webfist network as a fall back. More info at Webfist.org.
+When a user is being created a Webfinger profile will be created or updated.
 
