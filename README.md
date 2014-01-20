@@ -3,51 +3,35 @@ OTS
 
 Open Task Standard - Distributed Task Management
 
-Task Scheme
+## Why OTS
 
-{
-  "id": "opentaskstandard.com@25892e17-80f6-415f-9c65-7395632f0223",
-  "title": "Can you get me a Snickers?",
-  "notes": "The store is around the corner \nI'll give you the cash later :)",
-  "due_date": "2014-01-23T04:56:22Z",
-  "owner": "chris@opentaskstandard.com",
-  "assignees": [
-    {
-      "id": "johan@holder.nl",
-      "status": "pending"
-    }
-  ],  
-  "listeners": [
-    "john@doe.com", "janine@example.com"
-  ],
-  "comments": [
-    {
-      "index": "1",
-      "comment": "Why do I have to do this?",
-      "author": "johan@holder.nl",
-      "date": "2014-01-12T08:56:22Z"
-    }
-  ]
-}
+Like iCalender it would be great to be able to send a task to a collegaue or friend. Of course there are propriatary systems, like Basecamp, Things or the Reminder app on your Mac.
+But what if you collegaue uses a different task management app then you? Enter OTS. Open Task Standard. It enables you to create a account everywhere and assigns a task to somebody working with a different app or platform.
 
-## End points
+## Basic flows
 
-* GET /users
+### Task assignment flow
+1. A task is created on a OTS enabled system
+2. It's assigned to an e-mail address
+3. The underlying OTS server checks if an OTS account is associated with that e-mail address
+4. The assigned user either receives the task via it's selected OTS server. Or he will receive a direct notification via email from the task-creating server.
 
-* POST /users/{identifier}/tasks/{identifier}/assign
-* POST /tasks/{identifier}
+### Sign up flow
+1. Sign up proces is started on a task server/platform that supports OTS
+2. An e-mail address of choice is used
+3. Server checks if a OTS account is associated with the e-mail address
+4. If not, the registration process is finished
 
+### Update an existing assigned task 
+1. 
 
-## assign task on different ots server
+## The Task Object
 
-* call assign endpoint
-* ots server fetches task from server
-* 
+* Title
+* Notes
+* Due date
+* Owner
+* Assignees
+* Listeners
+* Comments
 
-## Assignee statuses
-* pending
-* accepted
-* denied
-
-## Syncing
-Each task has a ETAG, which changes on each change, also if comments changes gets added
