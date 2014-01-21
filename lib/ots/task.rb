@@ -16,6 +16,7 @@ module Ots
       user = User.build(identifier)
       if user.valid_webfinger?
         owner.server.assign(self, user)
+      end
     end
     
     def owner

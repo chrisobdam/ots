@@ -8,9 +8,14 @@ class Api::AssignController < ApiController
   
 private
   def check_task
-    unless params[:task_identifier].present? && params[:assignee_token].present? && params[:assignee_identifier].present?
-      render text: "No task identifier or token found", status: :unprocessable_entity
-      return false      
+    unless params[:task].present?
+      render text: "No task object found", status: :unprocessable_entity; return false
+    end
+    unless params[:task][:owner].present?
+      render text: "No owner found", status: :unprocessable_entity; return false
+    end
+    unless params[:task][:owner].present?
+      render text: "No owner found", status: :unprocessable_entity; return false
     end
   end
   

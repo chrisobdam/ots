@@ -9,6 +9,10 @@ class Task < ActiveRecord::Base
   
   attr_accessor :assignees_text  
   
+  def build(json)
+    
+  end
+  
   def to_param
     URI::encode(identifier)
   end
