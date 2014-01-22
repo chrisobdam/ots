@@ -1,5 +1,5 @@
 class Api::AssignController < ApiController
-  before_filter :check_task, :get_user
+  before_filter :check_task
   skip_before_filter :verify_authenticity_token  
   
   def create
@@ -8,23 +8,23 @@ class Api::AssignController < ApiController
   
 private
   def check_task
-    unless params[:task].present?
+    unless params[:task].present? and params[:task].is_a?(Hash)
       render text: "No task object found", status: :unprocessable_entity; return false
     end
-    unless params[:task][:identifier].present?
+    unless params[:task][:identifier].present? and params[:task][:identifier].is_a?(String)
       render text: "No identifier found", status: :unprocessable_entity; return false
     end
-    unless params[:task][:owner].present?
+    unless params[:task][:owner].present? and params[:task][:owner].is_a?(String)
       render text: "No owner found", status: :unprocessable_entity; return false
     end
-    unless params[:task][:token].present?
+    unless params[:task][:token].present? and params[:task][:token].is_a?(String)
       render text: "No token found", status: :unprocessable_entity; return false
     end
-    unless params[:task][:title].present?
+    unless params[:task][:title].present? and params[:task][:title].is_a?(String)
       render text: "No title found", status: :unprocessable_entity; return false
     end
     
-    unless has_assignees and has_listeners
+    unless has_listeners and has_assignees
       render text: "No assignee or listener found", status: :unprocessable_entity; return false
     end
     
@@ -33,18 +33,18 @@ private
     end
   end
   
-  def has_assignees  
+  def has_assignees 
     result = false
     if params[:task][:assignees].present?
       if params[:task][:assignees].is_a?(Array)
-        params[:task][:assignees].each |assignee| do
+        params[:task][:assignees].each do |assignee|
           unless assignee[:identifer].present?
-            render text: "No identifier found in assignee", status: :unprocessable_entity; return false
+            render text: "No identifier found in assignee", status: :unprocessable_entity and return
           end
         end
         result = true
       else
-        render text: "Malformed assignees; array expected", status: :unprocessable_entity; return false
+        render text: "Malformed assignees; array expected", status: :unprocessable_entity and return
       end
     end
     result
@@ -54,8 +54,8 @@ private
     result = false
     if params[:task][:listeners].present?
       if params[:task][:listeners].is_a?(Array)
-        params[:task][:listeners].each |listener| do
-          unless listener.is_a?(String)
+        params[:task][:listeners].each do |listener|
+          unless listener.is_a?(String)            
             render text: "Malformed listeners; array of strings expected", status: :unprocessable_entity; return false
           end
         end
@@ -67,18 +67,9 @@ private
     result
   end
   
-  def get_user
-    begin
-      @user = User.find_by!(identifier: params[:assignee_identifier])
-    rescue ActiveRecord::RecordNotFound
-      render text: "No user found", status: :not_found
-      return false      
-    end
-  end
-  
   def check_for_valid_user
     result = []
-    (params[:task][:listeners] + params[:task][:assignees].map{|x|x[:identifier]}).each |user| do
+    (params[:task][:listeners] + params[:task][:assignees].map{|x|x[:identifier]}).each do |user|
       result << obj if (obj = User.find_by(identifier: user))
     end
     !result.empty?
