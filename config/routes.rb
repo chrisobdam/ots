@@ -15,4 +15,5 @@ Ots::Application.routes.draw do
   
   get '.well-known/host-meta' => "webfinger#host_meta"
   get '.well-known/webfinger/(:resource)' => 'webfinger#query',constraints: {id: /.*/}
+  post 'assign' => 'api/tasks#assign'
 end

@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :tasks, foreign_key: "owner_id"
   
+  validates :identifier, presence: true
+  
   def to_param
     slug
   end

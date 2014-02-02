@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140105142734) do
+ActiveRecord::Schema.define(version: 20140123202157) do
 
   create_table "assignees", force: true do |t|
     t.integer "task_id"
     t.integer "user_id"
     t.string  "status"
     t.string  "token"
-    t.string  "user_identifier"
+    t.string  "identifier"
   end
 
   create_table "comments", force: true do |t|
@@ -32,10 +32,10 @@ ActiveRecord::Schema.define(version: 20140105142734) do
   end
 
   create_table "listeners", force: true do |t|
-    t.integer  "user_id"
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "user"
   end
 
   create_table "servers", force: true do |t|

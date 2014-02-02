@@ -1,16 +1,49 @@
 class Task < ActiveRecord::Base
   has_many :assignees
-  has_many :listeners  
+  has_many :listeners
   has_many :comments
   belongs_to :owner, :class_name => User
   
   after_save :push_updates
   before_save :create_assignees
   
-  attr_accessor :assignees_text  
+  validates :title, presence: true
+  validates :identifier, presence: true
   
-  def build(json)
+  attr_accessor :assignees_text  
+
+  class AssigneesError < StandardError;end
+  class ListenersError < StandardError;end
+  class CommentsError < StandardError;end
+  class UnknownAttributeError < StandardError;end
+      
+  def self.build(json)
+    assignees_hash = json.delete(:assignees) || []
+    comments_hash = json.delete(:comments) || []
+    listeners_hash = json.delete(:listeners) || []
+    owner_string = json.delete(:owner) || ""
     
+    task = Task.new(json)
+    
+    task.owner = User.new({identifier: owner_string})
+
+    raise AssigneesError unless assignees_hash.is_a?(Array)
+    raise ListenersError unless listeners_hash.is_a?(Array)
+    raise CommentsError unless comments_hash.is_a?(Array)
+    
+    assignees_hash.each do |assignee|
+      task.assignees.new(assignee)
+    end
+
+    listeners_hash.each do |listener|
+      task.listeners.new({user: listener})
+    end
+
+    comments_hash.each do |comment|
+      task.comments.new(comment)
+    end
+
+    task
   end
   
   def to_param

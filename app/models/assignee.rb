@@ -5,9 +5,10 @@ class Assignee < ActiveRecord::Base
   # validates_format_of :user_identifier, :with => /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/  
   # validates_uniqueness_of :user_identifier, scope: :task_id
   validates_uniqueness_of :user, scope: :task_id, :allow_nil => true
-    
+  validates :identifier, presence: true
+  
   def user_name
-    user ? user.identifier : user_identifier
+    user ? user.identifier : identifier
   end
   
   def status
